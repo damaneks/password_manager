@@ -1,0 +1,115 @@
+{% extends 'main/base.html' %}
+{% load mathfilters %}
+{% block title %}
+  Home
+{% endblock %}
+
+{% block content %}
+  {% if user.is_authenticated %}
+    <div class="d-flex justify-content-between">
+      <h1>Password Manager</h1>
+      <div class='d-flex flex-column align-items-end'>
+        <div class='p-2'>Signed as:
+          {{user.username}}</div>
+        <div class='p-2'>
+          <a href="/change_password">Change password</a>
+          <a href="/logout">Logout</a>
+        </div>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-6'>
+        <h2>Add new password</h2>
+        <form method='POST'>
+          {% csrf_token %}
+          <div class='form-row'>
+            <div class='form-group col'>
+              <label for="inputUrl">Website URL</label>
+              <input type="text" class='form-control' id='inputUrl' name='url' required>
+            </div>
+            <div class='form-group col'>
+              <label for="inputUsername">Username</label>
+              <input type="text" class='form-control' id='inputUsername' name='username'>
+            </div>
+          </div>
+          <div class='form-row'>
+            <div class='form-group col'>
+              <label for="inputEmail">Email</label>
+              <input type="email" class='form-control' id='inputEmail' name='email'>
+            </div>
+            <div class='form-group col'>
+              <label for="inputPassword1">Password</label>
+              <input type="password" class='form-control' id='inputPassword1' name='password' required>
+            </div>
+          </div>
+          <button type='submit' class='btn btn-success' name='add-password'>Add</button>
+        </form>
+      </div>
+      <script>
+        function clipboard(password) {
+          navigator
+            .clipboard
+            .writeText(password);
+        }
+      </script>
+      <div class='col-6'>
+        <h2>Passwords</h2>
+        <div class='list-group'>
+          {% for password in passwords %}
+            <form method="POST">
+              {% csrf_token %}
+              <div class='list-group-item'>
+                <a href="" class='list-group-item-action' onclick="return clipboard('{{password.password}}')">
+                  <div>
+                    <div class='d-flex w-100 justify-content-between'>
+                      <img src="{{password.logo}}" class='rounded float-right' height="25" width="25">
+                      <h5 class='mb-1'>{{password.name}}</h5>
+                      <p>{{password.last_change}}</p>
+                      <input type="text" hidden='true' name='password-id' value="{{password.id}}">
+                    </div>
+                    <p class='mb-1'>{{password.username}}</p>
+                    <small>{{password.email}}</small>
+                    <div class='progress'>
+                      <div class='progress-bar' role='progressbar' style="width: {{password.grade|mul:100}}%" aria-valuenow="{{password.grade}}" aria-valuemin="0" aria-valuemax="1">{{password.grade|floatformat:4}}</div>
+                    </div>
+
+                  </div>
+                </a>
+                <div class='input-group mb-3'>
+                  <input type="password" class='form-control' name='cardInput'>
+                  <button type='submit' class='btn btn-success' name="change-password">Change</button>
+                  <button type='submit' class='btn btn-warning' name="grant-access">Grant access</button>
+                  <button type='submit' class='btn btn-danger' name="delete-password" onclick="return confirm('Are you sure you want to delete this?')">Delete</button>
+                </div>
+              </div>
+            </form>
+          {% endfor %}
+          {% for password in authorized %}
+            <form method="POST">
+              {% csrf_token %}
+              <div class='list-group-item'>
+                <a href="" class='list-group-item-action' onclick="return clipboard('{{password.password}}')">
+                  <div>
+                    <div class='d-flex w-100 justify-content-between'>
+                      <img src="{{password.logo}}" class='rounded float-right' height="25" width="25">
+                      <h5 class='mb-1'>{{password.name}}</h5>
+                      <p>{{password.last_change}}</p>
+                      <input type="text" hidden='true' name='password-id' value="{{password.id}}">
+                    </div>
+                    <p class='mb-1'>{{password.username}}</p>
+                    <small>{{password.email}}</small>
+                  </div>
+                </a>
+              </div>
+            </form>
+          {% endfor %}
+        </div>
+      </div>
+
+    {% else %}
+      <h1>Password Manager</h1>
+      <p>Login
+        <a href="/login">here</a>
+      </p>
+    {% endif %}
+  {% endblock %}
