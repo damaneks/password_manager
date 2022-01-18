@@ -25,7 +25,6 @@ def home(response):
             email = response.POST.get('email')
             password = response.POST.get('password')
             grade = PasswordStats(password)
-            print(password, grade.strength())
             encrypted_password = fernet.encrypt(password.encode())
             try:
                 br.open(url)
@@ -34,8 +33,6 @@ def home(response):
                 title = url
 
             try:
-                print(url)
-                print(favicon.get(url)[0])
                 icon = favicon.get(url)[0].url
 
             except:
@@ -50,7 +47,6 @@ def home(response):
                 email=email,
                 grade=grade.strength()
             )
-            print(new_password.authorized.all())
             new_password.save()
 
         elif 'delete-password' in response.POST:
@@ -70,18 +66,17 @@ def home(response):
         elif 'grant-access' in response.POST:
             to_change = response.POST.get('password-id')
             coowner = response.POST.get('cardInput')
-            coowner = User.objects.get(username=coowner)
-            password = Password.objects.get(id=to_change)
-            password.authorized.add(coowner)
-            password.save()
-            print(password.authorized.all())
+            if User.objects.filter(username=coowner).exists():
+                coowner = User.objects.get(username=coowner)
+                password = Password.objects.get(id=to_change)
+                password.authorized.add(coowner)
+                password.save()
 
     if response.user.is_authenticated:
         passwords = Password.objects.all().filter(user=response.user)
         for password in passwords:
             password.password = fernet.decrypt(
                 password.password.encode()).decode()
-            print(password.password)
         authorized = response.user.coowner.all()
         for password in authorized:
             password.password = fernet.decrypt(
