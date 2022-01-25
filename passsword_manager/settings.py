@@ -104,6 +104,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'OPTIONS': {
+            'password_list_path': 'main/popular_password_poland.txt',
+        }
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
@@ -140,5 +146,7 @@ LOGOUT_REDIRECT_URL = '/'
 
 KEY = b'9_7gSOQiwl3gxUV2Jw7BJ20xp5d_TyjFUMbHhFrKO24='
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True
+#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+#SECURE_SSL_REDIRECT = True
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
