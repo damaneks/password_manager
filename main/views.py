@@ -72,21 +72,24 @@ def home(response):
         elif 'change-password' in response.POST:
             to_change = response.POST.get('password-id')
             new_password = response.POST.get('cardInput')
-            encrypted_password = fernet.encrypt(new_password.encode()).decode()
-            grade = PasswordStats(new_password)
-            password = Password.objects.get(id=to_change)
-            password.password = encrypted_password
-            password.grade = grade.strength()
-            password.save()
+            if re.match('[a-zA-Z0-9][a-zA-Z0-9-_.]{1,200}', new_password):
+                encrypted_password = fernet.encrypt(
+                    new_password.encode()).decode()
+                grade = PasswordStats(new_password)
+                password = Password.objects.get(id=to_change)
+                password.password = encrypted_password
+                password.grade = grade.strength()
+                password.save()
 
         elif 'grant-access' in response.POST:
             to_change = response.POST.get('password-id')
             coowner = response.POST.get('cardInput')
-            if User.objects.filter(username=coowner).exists():
-                coowner = User.objects.get(username=coowner)
-                password = Password.objects.get(id=to_change)
-                password.authorized.add(coowner)
-                password.save()
+            if re.match('[a-zA-Z0-9][a-zA-Z0-9-_.]{1,200}', coowner):
+                if User.objects.filter(username=coowner).exists():
+                    coowner = User.objects.get(username=coowner)
+                    password = Password.objects.get(id=to_change)
+                    password.authorized.add(coowner)
+                    password.save()
 
     if response.user.is_authenticated:
         passwords = Password.objects.all().filter(user=response.user)

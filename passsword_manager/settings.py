@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+from wsgiref.validate import PartialIteratorWrapper
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -155,3 +156,5 @@ SECURE_SSL_REDIRECT = True
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 AXES_ONLY_USER_FAILURES = True
 AXES_COOLOFF_TIME = 1
+
+PEPPER = 'pepper'

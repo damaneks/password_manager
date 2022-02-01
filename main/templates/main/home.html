@@ -29,7 +29,7 @@
             </div>
             <div class='form-group col'>
               <label for="inputUsername">Username</label>
-              <input type="text" class='form-control' id='inputUsername' name='username' pattern='[a-zA-Z0-9][a-zA-Z0-9-_.]{1,50}' title='Only letter, number, hyphens, underscores and periods. The username must start with a letter or number and must be between 1 and 200 characters long.'>
+              <input type="text" class='form-control' id='inputUsername' name='username' pattern='[a-zA-Z0-9][a-zA-Z0-9-_.]{1,200}' title='Only letter, number, hyphens, underscores and periods. The username must start with a letter or number and must be between 1 and 200 characters long.'>
             </div>
           </div>
           <div class='form-row'>
@@ -76,7 +76,7 @@
                   </div>
                 </a>
                 <div class='input-group mb-3'>
-                  <input type="password" class='form-control' name='cardInput' maxlength="100">
+                  <input type="password" class='form-control' name='cardInput' maxlength="200" pattern='[a-zA-Z0-9][a-zA-Z0-9-_.]{1,200}' title='Only letter, number, hyphens, underscores and periods. The input must start with a letter or number and must be between 1 and 200 characters long.'>
                   <button type='submit' class='btn btn-success' name="change-password">Change</button>
                   <button type='submit' class='btn btn-warning' name="grant-access">Grant access</button>
                   <button type='submit' class='btn btn-danger' name="delete-password" onclick="return confirm('Are you sure you want to delete this?')">Delete</button>
