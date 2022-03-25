@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-=$42pc#r&e@(9r7t5teg1hp_ak-d&g1s^4!l#aycwkm#n_pq2m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -150,11 +150,13 @@ LOGOUT_REDIRECT_URL = '/'
 
 KEY = b'9_7gSOQiwl3gxUV2Jw7BJ20xp5d_TyjFUMbHhFrKO24='
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True
+#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+#SECURE_SSL_REDIRECT = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 AXES_ONLY_USER_FAILURES = True
-AXES_COOLOFF_TIME = 1
+AXES_COOLOFF_TIME = 24
 
 PEPPER = 'pepper'
+
+PASSWORD_RESET_TIMEOUT_DAYS = 1
